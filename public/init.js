@@ -1,20 +1,73 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js";
+
 import {
-  FacebookAuthProvider,
-  signInWithPopup,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   getAuth,
   signInWithRedirect,
   getRedirectResult,
-} from "firebase/auth";
+  signInWithPopup,
+} from "https://www.gstatic.com/firebasejs/9.3.0/firebase-auth.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyC58rnwX7Zas-GdxfettF49Qjh6J6vSPAY",
+  authDomain: "bold-96a92.firebaseapp.com",
+  projectId: "bold-96a92",
+  storageBucket: "bold-96a92.appspot.com",
+  messagingSenderId: "1033134164289",
+  appId: "1:1033134164289:web:19324e4de34f1e885879c0",
+  measurementId: "G-Z7KPBLYW28",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+console.log(app);
 
 const fbProvider = new FacebookAuthProvider();
 const googleProvider = new GoogleAuthProvider();
 const auth = getAuth();
 
+console.log(auth);
+
 let token = null;
 auth.languageCode = "it";
 
-const loginWithFacebook = () => {
+var btn = document.getElementById("btn-login");
+var fbBtn = document.getElementById("btn-login-fb");
+var logoutBtn = document.getElementById("btn-logout");
+
+btn.addEventListener(
+  "click",
+  function () {
+    login();
+  },
+  false
+);
+
+fbBtn.addEventListener(
+  "click",
+  function () {
+    loginWithFacebook();
+  },
+  false
+);
+
+logoutBtn.addEventListener(
+  "click",
+  function () {
+    logout();
+  },
+  false
+);
+
+const logout = () => {
+  console.log("logout");
+  auth.signOut();
+};
+
+function loginWithFacebook() {
   signInWithPopup(auth, fbProvider)
     .then((result) => {
       // The signed-in user info.
@@ -42,7 +95,7 @@ const loginWithFacebook = () => {
 
       // ...
     });
-};
+}
 
 const login = () => {
   signInWithRedirect(auth, googleProvider);
