@@ -9,6 +9,7 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  getIdToken,
 } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-auth.js";
 
 // Your web app's Firebase configuration
@@ -33,6 +34,14 @@ const googleProvider = new GoogleAuthProvider();
 const auth = getAuth();
 
 console.log(auth);
+
+// getIdToken()
+//   .then((idToken) => {
+//     console.log("TOKEN wohooooo", idToken);
+//   })
+//   .catch((e) => {
+//     console.log("There was an error: ", e);
+//   });
 
 auth.languageCode = "it";
 
@@ -110,7 +119,7 @@ async function signupUser() {
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      console.log(user);
+      console.log(user.getIdToken());
       // ...
     })
     .catch((error) => {
@@ -123,10 +132,12 @@ async function signupUser() {
 
 async function emailLogin() {
   await signInWithEmailAndPassword(auth, email.value, password.value)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       // Signed in
       const user = userCredential.user;
       console.log(user);
+      const token = await user.getIdToken();
+      console.log(token);
       // ...
     })
     .catch((error) => {
