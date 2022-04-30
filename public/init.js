@@ -7,6 +7,8 @@ import {
   signInWithRedirect,
   getRedirectResult,
   signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-auth.js";
 
 // Your web app's Firebase configuration
@@ -43,6 +45,11 @@ var fbBtn = document.getElementById("btn-login-fb");
 var fbScopeBtn = document.getElementById("btn-login-fb-scope");
 var logoutBtn = document.getElementById("btn-logout");
 
+var email = document.getElementsByName("email")[0];
+var password = document.getElementsByName("password")[0];
+var signupBtn = document.getElementById("btn-signup");
+var loginBtn = document.getElementById("btn-login-email");
+
 btn.addEventListener(
   "click",
   function () {
@@ -67,6 +74,24 @@ fbScopeBtn.addEventListener(
   false
 );
 
+signupBtn.addEventListener(
+  "click",
+  function (e) {
+    e.preventDefault();
+    signupUser();
+  },
+  false
+);
+
+loginBtn.addEventListener(
+  "click",
+  function (e) {
+    e.preventDefault();
+    emailLogin();
+  },
+  false
+);
+
 logoutBtn.addEventListener(
   "click",
   function () {
@@ -79,6 +104,38 @@ const logout = () => {
   console.log("logout");
   auth.signOut();
 };
+
+async function signupUser() {
+  await createUserWithEmailAndPassword(auth, email.value, password.value)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log(user);
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+      console.log(errorCode, errorMessage);
+    });
+}
+
+async function emailLogin() {
+  await signInWithEmailAndPassword(auth, email.value, password.value)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log(user);
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+      console.log(errorCode, errorMessage);
+    });
+}
 
 function loginWithFacebook() {
   signInWithPopup(auth, fbProvider)
