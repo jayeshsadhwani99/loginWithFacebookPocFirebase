@@ -9,7 +9,7 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  getIdToken,
+  connectAuthEmulator,
 } from "https://www.gstatic.com/firebasejs/9.3.0/firebase-auth.js";
 
 // Your web app's Firebase configuration
@@ -32,6 +32,7 @@ const fbProvider = new FacebookAuthProvider();
 const fbScopeProvider = new FacebookAuthProvider();
 const googleProvider = new GoogleAuthProvider();
 const auth = getAuth();
+connectAuthEmulator(auth, "http://localhost:9099");
 
 console.log(auth);
 
